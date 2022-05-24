@@ -154,7 +154,7 @@ void DistortionAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
             float input = buffer.getSample(channel, sample) * preGainValue;
             float output = doDistortion(input) * postGainValue;
-            channelData[sample] = output;
+            channelData[sample] = output / distortionAmountValue;
         }
     }
 }
@@ -169,32 +169,32 @@ float DistortionAudioProcessor::doDistortion(float input) {
         return doSine(input);
     case DESTROY: 
         return doDestroy(input);
-    case DOWNSAMPLE:
-        doDownSample(input);
-    case NOISY_CIRCUIT:
-        return doNoisyCircuit(input);
+    case UNNAMED:
+        return doUnnamedDistortion(input);
+    case UNNAMED2:
+        return doUnnamedDistortionTwo(input);
     }
 }
 
 float DistortionAudioProcessor::doOverdrive(float input) {
     float output = input;
-    if (input > 1 - distortionAmountValue) {
-        output = 1 - distortionAmountValue;
-    } else if (input < -1 + distortionAmountValue) {
-        output = -1 + distortionAmountValue;
+    if (input > distortionAmountValue) {
+        output = distortionAmountValue;
+    } else if (input < -distortionAmountValue) {
+        output = -distortionAmountValue;
     }
-    return output / (1 - distortionAmountValue);
+    return output;
 }
 
 float DistortionAudioProcessor::doDeepFry(float input) {
     float output = input;;
-    if (input > 0.65 * (1 - distortionAmountValue)) {
+    if (input > 0.65 * distortionAmountValue) {
         output *= -1;
     }
-    else if (input < 0.65 * (- 1 + distortionAmountValue)) {
+    else if (input < 0.65 * -distortionAmountValue) {
         output *= -1;
     }
-    return output / (1 - distortionAmountValue);
+    return output;
 }
 
 float DistortionAudioProcessor::doSine(float input) {
@@ -204,23 +204,40 @@ float DistortionAudioProcessor::doSine(float input) {
     } else if (input < (-1 + distortionAmountValue)) {
         output += std::powf(input, 2);
     }
-    return output / (1 - distortionAmountValue);
+    return output;
 }
 
 float DistortionAudioProcessor::doDestroy(float input) {
     float output = input;
     if (input > 0) {
-        output *= (distortionAmountValue - input);
+        output *= (distortionAmountValue - input + 1);
     }
     else if (input < 0) {
-        output *= -1 * (distortionAmountValue - input);
+        output *= -1 * (distortionAmountValue - input + 1);
     }
-    return output / (1 - distortionAmountValue);
+    return output;
 }
 
-float DistortionAudioProcessor::doDownSample(float input) {
+float DistortionAudioProcessor::doUnnamedDistortion(float input) {
     float output = input;
-    return input;
+    if (input > distortionAmountValue) {
+        output = input - distortionAmountValue;
+    }
+    else if (input < -distortionAmountValue) {
+        output = input + distortionAmountValue;
+    }
+    return output;
+}
+
+float DistortionAudioProcessor::doUnnamedDistortionTwo(float input) {
+    float output = input;
+    if (input > distortionAmountValue) {
+        output = distortionAmountValue - input;
+    }
+    else if (input < -distortionAmountValue) {
+        output = -distortionAmountValue + input;
+    }
+    return output;
 }
 
 float DistortionAudioProcessor::doNoisyCircuit(float input) {

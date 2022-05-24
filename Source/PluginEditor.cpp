@@ -71,7 +71,7 @@ void DistortionAudioProcessorEditor::sliderValueChanged(Slider *slider) {
     } else if (slider == &postGain) {
         audioProcessor.postGainValue = postGain.getValue();
     } else if (slider == &distortionAmount) {
-        audioProcessor.distortionAmountValue = distortionAmount.getValue();
+        audioProcessor.distortionAmountValue = 1 - distortionAmount.getValue();
 
         colourMultiplier = distortionAmount.getValue() / 0.99;
         int rValue = 0;
@@ -113,13 +113,13 @@ void DistortionAudioProcessorEditor::sliderValueChanged(Slider *slider) {
             secondaryColour = "#AF73AF";
             break;
         case 5:
-            audioProcessor.distortionType = DOWNSAMPLE;
-            distortionTypeText = "DOWNSAMPLE";
+            audioProcessor.distortionType = UNNAMED;
+            distortionTypeText = "UNNAMED";
             secondaryColour = "#FFB7C5";
             break;
         case 6:
-            audioProcessor.distortionType = NOISY_CIRCUIT;
-            distortionTypeText = "NOISY CIRCUIT";
+            audioProcessor.distortionType = UNNAMED2;
+            distortionTypeText = "UNNAMED2";
             secondaryColour = "#DDDDDD";
             break;
         }
@@ -226,7 +226,7 @@ void DistortionAudioProcessorEditor::resized()
     distortionType.setBounds(middleLeft);
     distortionType.setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
     distortionType.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-    distortionType.setRange(Range<double>(1, 4), 1);
+    distortionType.setRange(Range<double>(1, 6), 1);
     distortionType.setValue(1);
     distortionType.addListener(this);
 

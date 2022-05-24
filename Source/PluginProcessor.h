@@ -18,7 +18,8 @@ enum DistortionType {
     DEEPFRY,
     SINE,
     DESTROY,
-    DOWNSAMPLE,
+    UNNAMED,
+    UNNAMED2,
     NOISY_CIRCUIT,
 };
 class DistortionAudioProcessor : public juce::AudioProcessor
@@ -43,7 +44,8 @@ public:
     float doDeepFry(float input);
     float doSine(float input);
     float doDestroy(float input);
-    float doDownSample(float input);
+    float doUnnamedDistortion(float input);
+    float doUnnamedDistortionTwo(float input);
     float doNoisyCircuit(float input);
 
     //==============================================================================
