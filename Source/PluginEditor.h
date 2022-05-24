@@ -41,9 +41,13 @@ private:
     Slider distortionAmount;
 
     Rectangle<int> right;
+    Rectangle<int> topRight;
     Rectangle<int> middleRight;
+
     Rectangle<int> middleLeft;
     Rectangle<int> left;
+    Rectangle<int> topLeft;
+
 
     String distortionTypeText = "OVERDRIVE";
     String secondaryColour = "#FFDA03";

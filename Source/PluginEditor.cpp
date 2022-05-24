@@ -156,6 +156,9 @@ void DistortionAudioProcessorEditor::paint (juce::Graphics& g) {
     g.drawFittedText (String(int((distortionAmount.getValue() / 0.99) * 100)) + "%", middleRight, juce::Justification::centred, 1);
     g.setColour(Colour::fromString(secondaryColour));
     g.drawFittedText(distortionTypeText, middleLeft, juce::Justification::centred, 1);
+    g.drawFittedText("PRE\nGAIN", topLeft, juce::Justification::centred, 1);
+    g.drawFittedText("POST\nGAIN", topRight, juce::Justification::centred, 1);
+
 }
 
 void DistortionAudioProcessorEditor::resized()
@@ -192,6 +195,8 @@ void DistortionAudioProcessorEditor::resized()
     middleLeft = Rectangle<int>(middleLeftX, middleLeftY, middleLeftWidth, middleLeftHeight);
     right = Rectangle<int>(rightX, rightY, rightWidth, rightHeight);
     left = Rectangle<int>(leftX, leftY, leftWidth, leftHeight);
+    topRight = Rectangle<int>(rightX, 0, rightWidth, rightHeight * 0.375);
+    topLeft = Rectangle<int>(leftX, 0, leftWidth, leftHeight * 0.375);
 
 
     postGain.setBounds(right);
